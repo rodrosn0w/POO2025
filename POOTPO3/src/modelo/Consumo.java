@@ -6,11 +6,13 @@ public class Consumo {
     private int anio;
     private int mes;
     private float monto;
+    private String nombreEstablecimiento;
 
-    public Consumo(int anio, int mes, float monto) {
+    public Consumo(int anio, int mes, float monto, String nombreEstablecimiento) {
         this.anio = anio;
         this.mes = mes;
         this.monto = monto;
+        this.nombreEstablecimiento = nombreEstablecimiento;
     }
 
     public int getAnio() {

@@ -3,8 +3,10 @@ package modelo;
 public class TarjetaDebito extends Tarjeta {
     private float devIVA;
 
-    public TarjetaDebito(Cliente cliente, String tarjetaID, int mes, float devIVA) {
+    public TarjetaDebito(Cliente cliente, String tarjetaID, float devIVA) {
+
         super(cliente, tarjetaID);
+        this.devIVA = devIVA;
     }
 
     public float getDevIVA() {
