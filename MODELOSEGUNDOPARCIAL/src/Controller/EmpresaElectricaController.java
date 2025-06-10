@@ -6,11 +6,12 @@ import Model.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 public class EmpresaElectricaController {
 
-    private static EmpresaElectricaController INSATNCE = null;
+    private static EmpresaElectricaController INSTANCE = null;
 
     private List<Usuario> usuarios;
     private List<Tarifa> tarifas;
@@ -23,11 +24,11 @@ public class EmpresaElectricaController {
     }
 
     public static synchronized EmpresaElectricaController getInstance() {
-        if (INSATNCE == null) {
-            INSATNCE = new EmpresaElectricaController();
+        if (INSTANCE == null) {
+            INSTANCE = new EmpresaElectricaController();
 
         }
-        return INSATNCE;
+        return INSTANCE;
     }
 
     //o	a) Alta de usuario residencial
@@ -41,10 +42,50 @@ public class EmpresaElectricaController {
                 }
             }
         }
-        int dni = Integer.valueOf(urDTO.getDni());
-        UsuarioResidencial urdto = new UsuarioResidencial )
-        usuarios.add(urdto);
 
+        UsuarioResidencial urdto = toModel(urDTO);
+        usuarios.add(urdto);
+    }
+
+    private static UsuarioResidencial toModel(UsuarioResidencialDTO dto) {
+        Medidor medidor = new Medidor(123, new Date()); // o generar el número dinámicamente si querés
+
+        return new UsuarioResidencial(
+                medidor,
+                0, // idUsuario, lo podés inicializar en 0 si se asigna después
+                dto.getCalle(),
+                dto.getPiso(),
+                dto.getDpto(),
+                dto.getCodigoPostal(),
+                dto.getLocalidad(),
+                dto.getProvincia(),
+                dto.getNombre(),
+                dto.getDni()
+        );
+    }
+
+    public List<Usuario> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(List<Usuario> usuarios) {
+        this.usuarios = usuarios;
+    }
+
+    public List<Tarifa> getTarifas() {
+        return tarifas;
+    }
+
+    public void setTarifas(List<Tarifa> tarifas) {
+        this.tarifas = tarifas;
+    }
+
+    public List<Factura> getFacturas() {
+        return facturas;
+    }
+
+    public void setFacturas(List<Factura> facturas) {
+        this.facturas = facturas;
     }
     //o	b) Alta de usuario industrial
     //o	c) Consulta de consumo

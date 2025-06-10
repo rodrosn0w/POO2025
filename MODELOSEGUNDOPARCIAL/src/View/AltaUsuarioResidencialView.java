@@ -10,63 +10,95 @@ import java.awt.*;
 import static java.awt.AWTEventMulticaster.add;
 
 public class AltaUsuarioResidencialView extends JFrame {
-    private JLabel labelnombre;
-    private JLabel labeldni;
-
-    private JTextField txtnombre;
-    private JTextField txtDNI;
-
-    private JButton btnGuardar;
-    private JButton btnCancelar;
-
+    private JTextField txtNombre, txtDNI, txtCalle, txtAltura, txtPiso, txtDpto, txtCodigoPostal, txtLocalidad, txtProvincia;
+    private JButton btnGuardar, btnCancelar;
     private EmpresaElectricaController empresaElectricaController;
 
     public AltaUsuarioResidencialView() {
         this.setTitle("Alta de Usuario Residencial");
         setSize(500, 500);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLayout(new GridLayout(2, 2));
+        setLayout(new GridLayout(11, 2)); // 9 campos + botones
+
         empresaElectricaController = EmpresaElectricaController.getInstance();
 
-        labelnombre = new JLabel("Nombre: ");
-        add(labelnombre);
+        // Campos
+        add(new JLabel("Nombre:"));
+        txtNombre = new JTextField();
+        add(txtNombre);
 
-        txtnombre = new JTextField();
-        add(txtnombre);
-
-        labeldni = new JLabel("DNI: ");
-        add(labeldni);
-
+        add(new JLabel("DNI:"));
         txtDNI = new JTextField();
         add(txtDNI);
 
+        add(new JLabel("Calle:"));
+        txtCalle = new JTextField();
+        add(txtCalle);
+
+        add(new JLabel("Altura:"));
+        txtAltura = new JTextField();
+        add(txtAltura);
+
+        add(new JLabel("Piso:"));
+        txtPiso = new JTextField();
+        add(txtPiso);
+
+        add(new JLabel("Dpto:"));
+        txtDpto = new JTextField();
+        add(txtDpto);
+
+        add(new JLabel("Código Postal:"));
+        txtCodigoPostal = new JTextField();
+        add(txtCodigoPostal);
+
+        add(new JLabel("Localidad:"));
+        txtLocalidad = new JTextField();
+        add(txtLocalidad);
+
+        add(new JLabel("Provincia:"));
+        txtProvincia = new JTextField();
+        add(txtProvincia);
+
+        // Botones
         btnGuardar = new JButton("Guardar");
-        btnGuardar.addActionListener(e -> GuardarUsuario());
+        btnGuardar.addActionListener(e -> guardarUsuario());
         add(btnGuardar);
 
         btnCancelar = new JButton("Cancelar");
-
+        btnCancelar.addActionListener(e -> dispose());
         add(btnCancelar);
-
 
         setVisible(true);
     }
-    private void GuardarUsuario() {
-        String nombre = txtnombre.getText();
-        String dni = txtDNI.getText();
+    private void guardarUsuario() {
+        try {
+            String nombre = txtNombre.getText();
+            int dni = Integer.parseInt(txtDNI.getText());
+            String calle = txtCalle.getText();
+            int altura = Integer.parseInt(txtAltura.getText());
+            int piso = Integer.parseInt(txtPiso.getText());
+            String dpto = txtDpto.getText();
+            int codigoPostal = Integer.parseInt(txtCodigoPostal.getText());
+            String localidad = txtLocalidad.getText();
+            String provincia = txtProvincia.getText();
 
-        UsuarioResidencialDTO urdto = new UsuarioResidencialDTO(nombre, dni);
+            UsuarioResidencialDTO dto = new UsuarioResidencialDTO(
+                    nombre, dni, calle, altura, piso, dpto, codigoPostal, localidad, provincia
+            );
 
-        try{
-            empresaElectricaController.altaUsuarioResidencial(urdto);
-            JOptionPane.showMessageDialog(null, "Usuario guardado");
+            empresaElectricaController.altaUsuarioResidencial(dto);
+            JOptionPane.showMessageDialog(null, "Usuario guardado con éxito.");
             dispose();
-        } catch (Exception e){
-            JOptionPane.showMessageDialog(null, e);
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Error: ingresá solo números donde corresponde.");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al guardar: " + e.getMessage());
         }
     }
+
     public static void main(String[] args) {
-        SwingUtilities.invokeLater((AltaUsuarioResidencialView::new));
+        SwingUtilities.invokeLater(AltaUsuarioResidencialView::new);
     }
 }
 
